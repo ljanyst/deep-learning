@@ -51,6 +51,9 @@ parser.add_argument('--n-steps', type=int, default=100,
                     help='number of characters in each sequence in a batch')
 parser.add_argument('--epochs', type=int, default=20,
                     help='number of training epochs')
+parser.add_argument('--tensorboard-dir', default="tb",
+                    help='name of the tensorboard data directory')
+
 args = parser.parse_args()
 
 #-------------------------------------------------------------------------------
@@ -62,6 +65,7 @@ print('LSTM layers:              ', args.lstm_layers)
 print('Number of sequences:      ', args.n_seqs)
 print('Number of steps:          ', args.n_steps)
 print('Number of training epochs:', args.epochs)
+print('Tensorboard directory:    ', args.tensorboard_dir)
 
 #-------------------------------------------------------------------------------
 # Open the text file and create the vocabulary dictionary
@@ -95,8 +99,11 @@ loss, optimizer = net.get_training_tensors()
 saver = tf.train.Saver(max_to_keep=100)
 characters_per_batch = args.n_seqs * args.n_steps
 n_batches = len(encoded) // characters_per_batch
+summary_tensor = tf.summary.merge_all()
+iteration      = 0
 with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
+    file_writer = tf.summary.FileWriter(args.tensorboard_dir, sess.graph)
     for e in range(args.epochs):
         new_state   = sess.run(net.initial_state)
         total_loss  = 0
@@ -108,11 +115,14 @@ with tf.Session() as sess:
                     net.targets:       y,
                     net.keep_prob:     0.5,
                     net.initial_state: new_state}
-            batch_loss, new_state, _ = sess.run([loss,
-                                                 net.final_state,
-                                                 optimizer],
-                                                 feed_dict=feed)
+            summary, batch_loss, new_state, _ = sess.run([summary_tensor,
+                                                          loss,
+                                                          net.final_state,
+                                                          optimizer],
+                                                         feed_dict=feed)
             total_loss += batch_loss
+            file_writer.add_summary(summary, iteration)
+            iteration += 1
 
         print('Training loss: {:.4f}... '.format(total_loss/n_batches))
 
