@@ -161,9 +161,9 @@ parser.add_argument('text', metavar='data.txt', type=str, nargs=1,
                     help='the text body to train on')
 parser.add_argument('--name', default='test',
                     help='project name')
-parser.add_argument('--embedding-size', type=int, default=200,
+parser.add_argument('--embedding-size', type=int, default=300,
                     help='size of the embedding')
-parser.add_argument('--min-frequency', type=int, default=25,
+parser.add_argument('--min-frequency', type=int, default=5,
                     help='minimum word frequency in the corpus')
 parser.add_argument('--batch-size', type=int, default=1000,
                     help='batch size')
