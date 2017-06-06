@@ -78,19 +78,22 @@ class SkipGram:
         #-----------------------------------------------------------------------
         with tf.name_scope('loss'):
             softmax_w = tf.Variable(tf.truncated_normal(
-                                      (vocab_len, embedding_len), stddev=0.1))
-            softmax_b = tf.Variable(tf.zeros(vocab_len))
+                                      (vocab_len, embedding_len), stddev=0.1),
+                                    name="softmax_w")
+            softmax_b = tf.Variable(tf.zeros(vocab_len), name="softmax_b")
 
-            loss = tf.nn.sampled_softmax_loss(softmax_w, softmax_b,
-                                              self.targets, embed, 100,
-                                              vocab_len)
+            with tf.name_scope('sampled_softmax_loss'):
+                loss = tf.nn.sampled_softmax_loss(softmax_w, softmax_b,
+                                                  self.targets, embed, 100,
+                                                  vocab_len)
             self.loss = tf.reduce_mean(loss)
             tf.summary.scalar('loss', self.loss)
 
         #-----------------------------------------------------------------------
         # The optimizer
         #-----------------------------------------------------------------------
-        self.optimizer = tf.train.AdamOptimizer().minimize(self.loss)
+        with tf.name_scope('optimizer'):
+            self.optimizer = tf.train.AdamOptimizer().minimize(self.loss)
 
     #---------------------------------------------------------------------------
     def setup_projection(self, logdir, vocab, counter):
@@ -245,7 +248,7 @@ summary_tensor = tf.summary.merge_all()
 with tf.Session() as sess:
     iteration = 1
     sess.run(tf.global_variables_initializer())
-
+    net.summary_writer.add_graph(sess.graph)
     for e in range(args.epochs):
         loss   = 0
         length = 0
