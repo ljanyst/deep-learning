@@ -239,7 +239,7 @@ print('[i] Setting up the network...')
 net = SkipGram(vocab_size, args.embedding_size)
 net.setup_projection(args.tensorboard_dir, sorted_vocab, cnt)
 
-saver = tf.train.Saver(max_to_keep=100)
+saver = tf.train.Saver(max_to_keep=5)
 n_batches = len(encoded_text)//args.batch_size
 if len(encoded_text) % args.batch_size != 0:
     n_batches += 1
