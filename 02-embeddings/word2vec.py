@@ -211,8 +211,9 @@ print('[i] Number of tokens:', len(text))
 cnt = Counter(text)
 print('[i] Vocabulary size:', len(cnt))
 
-print('[i] Removing rare words...')
-text = [word for word in text if cnt[word] > args.min_frequency]
+print('[i] Replacing rare words with <UNSEEN>...')
+text = [word if cnt[word] > args.min_frequency else '<UNSEEN>' for word in text]
+cnt = Counter(text)
 
 print('[i] Subsampling frequent words...')
 t          = 1e-5
