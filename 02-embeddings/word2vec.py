@@ -163,13 +163,13 @@ parser.add_argument('--name', default='test',
                     help='project name')
 parser.add_argument('--embedding-size', type=int, default=300,
                     help='size of the embedding')
-parser.add_argument('--min-frequency', type=int, default=5,
+parser.add_argument('--min-frequency', type=int, default=50,
                     help='minimum word frequency in the corpus')
 parser.add_argument('--batch-size', type=int, default=1000,
                     help='batch size')
 parser.add_argument('--window-size', type=int, default=10,
                     help='word window size')
-parser.add_argument('--epochs', type=int, default=20,
+parser.add_argument('--epochs', type=int, default=500,
                     help='number of training epochs')
 parser.add_argument('--tensorboard-dir', default="tb",
                     help='name of the tensorboard data directory')
@@ -280,7 +280,7 @@ with tf.Session() as sess:
 
         loss /= float(length)
         print('[i] Training loss: {:.4f}... '.format(loss))
-        if (e+1) % 5 == 0:
+        if (e+1) % 100 == 0:
             checkpoint = '{}/e{}.ckpt'.format(args.name, e+1)
             saver.save(sess, checkpoint)
             print('[i] Checkpoint saved:', checkpoint)
