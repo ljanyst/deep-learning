@@ -7,6 +7,7 @@
 
 import argparse
 import random
+import pickle
 import math
 import sys
 import os
@@ -173,10 +174,18 @@ parser.add_argument('--epochs', type=int, default=500,
                     help='number of training epochs')
 parser.add_argument('--tensorboard-dir', default="tb",
                     help='name of the tensorboard data directory')
-parser.add_argument('--output-file', default="embeddings.npy",
-                    help='file to save the weights to')
+parser.add_argument('--embedding-file', default='embeddings.npy',
+                    help='file eto save the weights to')
+parser.add_argument('--metadata-file', default='',
+                    help='file to save the metadata to')
 
 args = parser.parse_args()
+
+metadata_file = args.metadata_file
+if not metadata_file:
+    metadata_file = args.embedding_file.split('.')
+    metadata_file[-1] = 'pkl'
+    metadata_file = '.'.join(metadata_file)
 
 #-------------------------------------------------------------------------------
 # Print parameters
@@ -188,7 +197,8 @@ print('[i] Batch size:               ', args.batch_size)
 print('[i] Window size:              ', args.window_size)
 print('[i] Number of training epochs:', args.epochs)
 print('[i] Tensorboard directory:    ', args.tensorboard_dir)
-print('[i] Output file:              ', args.output_file)
+print('[i] Embedding file:           ', args.embedding_file)
+print('[i] Metadata file:            ', metadata_file)
 
 #-------------------------------------------------------------------------------
 # Open the text file, tokenize the text body, remove rare words, and subsample
@@ -288,5 +298,8 @@ with tf.Session() as sess:
     saver.save(sess, checkpoint)
     print('[i] Checkpoint saved:', checkpoint)
     embedding = sess.run(net.embedding)
-    np.save(args.output_file, embedding)
-    print('[i] Data saved:', args.output_file)
+    np.save(args.embedding_file, embedding)
+    print('[i] Embedding saved:', args.embedding_file)
+    with open(metadata_file, 'wb') as f:
+        pickle.dump(sorted_vocab, f)
+    print('[i] Metadata saved:', metadata_file)
