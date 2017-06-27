@@ -40,3 +40,18 @@ Generate vector representations of words after infering meaning similarity from
 the surrounding context.
 
 ![Embedding visualization](02-embeddings/assets/embedding.png)
+
+Sentiment Analysis with RNN
+---------------------------
+
+Analyze sentiment of movie reviews using a Recurrent Neural Network and word
+embeddings.
+
+    ]==> ./test.py --embeddings-file wiki.en.npy review_1.txt --name embeddings-1-256
+    [i] Project name:            embeddings-1-256
+    [i] Network checkpoint:      embeddings-1-256/final.ckpt
+    [i] Loading embeddings from: wiki.en.npy
+    [i] Using embeddings:        True
+    [i] Vocabulary size:         2518927
+    [i] Loading the embedding...
+    [i] Verdict:                 Positive
