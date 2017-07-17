@@ -82,3 +82,18 @@ A sample from a network thrained on a subset of dialogs from The Simpsons.
     homer_simpson: now, you learn your numbers from perfect.
     bart_simpson: oh, yeah, can i look too?
     moe_szyslak: sure, but it'll cost somethin' how to make a job?
+
+Sorting with an Encoder-Decoder RNN
+-----------------------------------
+
+Train a recurrent neural network to produce a sorted version of the input sequence.
+
+    ]==> ./sort.py --seq=hello   
+    [i] Project name:         test
+    [i] Network checkpoint:   test/final.ckpt
+    [i] LSTM size:            64
+    [i] LSTM layers:          2
+    [i] Max sequence length:  10
+    [i] Sequence to sort:     hello
+    [i] Restoring a checkpoint from test/final.ckpt
+    [i] Sorted sequence:      ehllo
