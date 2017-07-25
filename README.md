@@ -97,3 +97,12 @@ Train a recurrent neural network to produce a sorted version of the input sequen
     [i] Sequence to sort:     hello
     [i] Restoring a checkpoint from test/final.ckpt
     [i] Sorted sequence:      ehllo
+
+Generate MNIST digits with a generative adversarial network
+-----------------------------------------------------------
+
+My first attempt at training a generative-adversarial network on the MNIST data
+to generate images of digits. It's a shalow network, both generator and
+discriminator have only one hidden layer.
+
+![Generated samples](06-mnist-gan/assets/output.png)
