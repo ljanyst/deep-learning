@@ -106,3 +106,10 @@ to generate images of digits. It's a shalow network, both generator and
 discriminator have only one hidden layer.
 
 ![Generated samples](06-mnist-gan/assets/output.png)
+
+Generate house numbers with a generative adversarial network
+------------------------------------------------------------
+
+This is a deep convolutional network with normalization.
+
+![Generated samples](07-dc-gan/assets/output.png)
